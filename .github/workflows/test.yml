@@ -1,6 +1,5 @@
 name: DevSecOpsTask1
 
-#Trigger workflow on pull requests and push
 on:
   pull_request:
   push:
@@ -10,10 +9,9 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest      
-        
+    runs-on: ubuntu-latest
+
     steps:
-      
       - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
 
       - name: Checkout code
@@ -24,7 +22,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          #Caching packages dependencies
+          # Caching packages dependencies
           cache: 'pip'
           cache-dependency-path: '**/requirements*.txt'
       - run: echo "Python has been set up."
@@ -36,8 +34,23 @@ jobs:
       - run: echo "Dependencies have been installed."
 
       - name: Run tests with pytest
-        #Using all available CPU-cores with -n auto
-        #Measure code coverage during the test with --cov
-        run: pytest -n auto --cov=note_api tests/
-
+        # Using all available CPU-cores with -n auto
+        # Measure code coverage during the test with --cov
+        run: pytest -n auto --cov=note_api tests/ --cov-report=xml
       - run: echo "Pytest has been executed. Job status is ${{ job.status }}."
+
+      # Upload results to Codecov only on merge to main
+      - name: Upload results to Codecov
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      # Snyk Security Scan only on merge to main
+      - name: Run Snyk to check for vulnerabilities
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: snyk/actions@v0.6.0
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: test
