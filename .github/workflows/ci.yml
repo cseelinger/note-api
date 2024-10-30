@@ -44,31 +44,31 @@ jobs:
 
       - name: Upload coverage to Codecov
       # Use Codecov Action to upload coverage report
-      uses: codecov/codecov-action@v3
-      with:
-        files: ./coverage.xml  # Referencing the coverage XML file
-        flags: unittests
-        name: code-coverage
-    - run: echo "Coverage report has been uploaded to Codecov."
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml  # Referencing the coverage XML file
+          flags: unittests
+          name: code-coverage
+      - run: echo "Coverage report has been uploaded to Codecov."
 
-    - name: Run security scan with Snyk
-      uses: snyk/actions/python@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # Make sure to add your Snyk API token in the GitHub Secrets
-    - run: echo "Security scan has been completed."
+      - name: Run security scan with Snyk
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # Make sure to add your Snyk API token in the GitHub Secrets
+      - run: echo "Security scan has been completed."
 
-    - name: Build and push Docker image
-      env:
-        REGISTRY: ghcr.io
-        IMAGE_NAME: ${{ github.repository }}
-        TAG: ${{ github.sha }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        docker build -t $REGISTRY/$IMAGE_NAME:$TAG .
-        echo $GITHUB_TOKEN | docker login $REGISTRY -u ${{ github.actor }} --password-stdin
-        docker push $REGISTRY/$IMAGE_NAME:$TAG
-    - run: echo "Docker image has been pushed to GitHub Container Registry."
+      - name: Build and push Docker image
+        env:
+          REGISTRY: ghcr.io
+          IMAGE_NAME: ${{ github.repository }}
+          TAG: ${{ github.sha }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          docker build -t $REGISTRY/$IMAGE_NAME:$TAG .
+          echo $GITHUB_TOKEN | docker login $REGISTRY -u ${{ github.actor }} --password-stdin
+          docker push $REGISTRY/$IMAGE_NAME:$TAG
+      - run: echo "Docker image has been pushed to GitHub Container Registry."
 
-    # Old
-    
-    - run: echo "Pytest has been executed. Job status is ${{ job.status }}."
+      # Old
+      
+      - run: echo "Pytest has been executed. Job status is ${{ job.status }}."
