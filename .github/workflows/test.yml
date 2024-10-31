@@ -45,7 +45,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-          - name: Run Snyk to check for vulnerabilities
+      - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/setup@v1
         with:
           snyk-token: ${{ secrets.SNYK_TOKEN }}
