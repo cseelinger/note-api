@@ -1,4 +1,4 @@
-name: CI Pipeline Docker
+name: CI Pipeline Snyk
 
 on:
   push:
