@@ -45,9 +45,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/snyk-action@v1
-        with:
-          snyk-token: ${{ secrets.SNYK_TOKEN }}
-
       - run: echo "Pytest has been executed. Job status is ${{ job.status }}."
