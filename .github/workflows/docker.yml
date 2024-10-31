@@ -1,6 +1,46 @@
-name: Example workflow for Docker using Snyk
-on: push
-jobs:
+# Definiere das Bild, das für die Pipeline verwendet wird
+image: docker:latest
+
+# Definiere Dienste, die für die Pipeline benötigt werden
+services:
+  - docker:dind
+
+# Definiere Umgebungsvariablen
+variables:
+  DOCKER_DRIVER: overlay2
+
+# Definiere die verschiedenen Phasen der Pipeline
+stages:
+  - build
+  - test
+  - security
+
+# Job zum Erstellen des Docker-Images
+build:
+  stage: build
+  script:
+    # Baue das Docker-Image aus dem Dockerfile
+    - docker build -t my-app:latest .
+
+# Job zum Testen der Anwendung
+test:
+  stage: test
+  script:
+    # Führe Tests im Docker-Container aus (z.B. mit pytest)
+    - docker run --rm my-app:latest pytest
+
+# Job zum Scannen des Docker-Images mit Snyk
+security:
+  stage: security
+  script:
+    # Authentifiziere dich mit Snyk
+    - snyk auth $SNYK_TOKEN  # Stelle sicher, dass das Snyk-Token als Umgebungsvariable gesetzt ist
+    # Scanne das Docker-Image mit Snyk
+    - snyk test --docker my-app:latest --all-sub-projects
+
+#name: Example workflow for Docker using Snyk
+#on: push
+#jobs:
 #  security:
 #    runs-on: ubuntu-latest
 #    steps:
@@ -10,34 +50,3 @@ jobs:
 #        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 #      with:
 #        image: your/image-to-test
-
-  image: docker:latest
-
-  services:
-    - docker:dind
-
-  variables:
-    DOCKER_DRIVER: overlay2
-
-  stages:
-    - build
-    - test
-    - security
-
-  build:
-    stage: build
-    script:
-      # Baue das Docker-Image aus dem Dockerfile
-      - docker build -t my-app:latest .
-
-  test:
-    stage: test
-    script:
-      # Führe Tests im Docker-Container aus (z.B. mit pytest)
-      - docker run --rm my-app:latest pytest
-
-  security:
-    stage: security
-    script:
-      # Scanne das Docker-Image mit Snyk
-      - snyk test --docker my-app:latest --all-sub-projects
