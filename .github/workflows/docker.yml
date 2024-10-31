@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI Pipeline Snyk
 
 on: push
 
@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2  # Klone das Repository
+        uses: actions/checkout@v3  # Klone das Repository
 
       - name: Build Docker Image
         run: docker build -t my-app:latest .  # Baue das Docker-Image aus dem Dockerfile
