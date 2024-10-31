@@ -16,6 +16,9 @@ jobs:
       - name: Run Tests
         run: docker run --rm my-app:latest pytest  # Führe die Tests im Docker-Container aus
 
+      - name: Install Snyk CLI
+        run: npm install -g snyk # Installiere Snyk CLI für den Sicherheitsscan
+
       - name: Snyk Security Scan
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # Verwende das Snyk-Token aus den GitHub-Secrets
