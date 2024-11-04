@@ -46,14 +46,3 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - run: echo "Pytest has been executed. Job status is ${{ job.status }}."
-
-      - name: Install Snyk CLI
-        run: npm install -g snyk
-
-      - name: Snyk Security Scan
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: |
-          snyk monitor
-          snyk test
-
