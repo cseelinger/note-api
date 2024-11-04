@@ -32,6 +32,6 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
-          snyk monitor --file=requirements.txt
+          snyk monitor
           snyk test --file=requirements.txt
 
