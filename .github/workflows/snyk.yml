@@ -27,7 +27,6 @@ jobs:
         run: npm install -g snyk
 
       - name: Snyk Security Scan
-        uses: snyk/actions/python@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
