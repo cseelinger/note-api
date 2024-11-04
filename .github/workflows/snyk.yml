@@ -29,5 +29,7 @@ jobs:
       - name: Snyk Security Scan
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
         run: snyk test --file=requirements.txt
 
