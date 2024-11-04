@@ -24,16 +24,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt && pip install -r requirements-dev.txt
-
-      - name: Snyk Monitor for requirements-dev.txt
-        run: snyk monitor --file=requirements-dev.txt
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-      - name: Snyk Monitor for Dockerfile
-        run: snyk monitor --file=Dockerfile
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          snyk monitor --file=requirements.txt
+          snyk monitor --file=requirements-dev.txt
+          snyk monitor --file=Dockerfile
 
       - name: Install Snyk CLI
         run: npm install -g snyk
