@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@master
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -27,6 +28,7 @@ jobs:
         run: npm install -g snyk
 
       - name: Snyk Security Scan
+        uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
