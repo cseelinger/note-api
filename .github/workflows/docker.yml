@@ -1,7 +1,10 @@
 name: CI Pipeline Docker
 
 on:
-  push:
+  workflow_run:
+    workflows: ["CI Pipeline Codecov", "CI Pipeline Snyk"]
+    types:
+      - completed
 
 jobs:
   docker:
