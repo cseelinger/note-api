@@ -2,7 +2,9 @@ name: CI Pipeline Docker
 
 on:
   workflow_run:
-    workflows: ["CI Pipeline Codecov", "CI Pipeline Snyk"]
+    workflows:
+      - CI Pipeline Codecov
+      - CI Pipeline Snyk
     types:
       - completed
 
