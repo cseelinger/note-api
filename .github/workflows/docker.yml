@@ -25,4 +25,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: cseelinger/note-api:latest # Hier muss man ggf seinen eigenen Benutzernamen einfügen
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/note-api:latest # Hier muss man ggf seinen eigenen Benutzernamen einfügen
