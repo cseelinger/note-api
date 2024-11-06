@@ -1,20 +1,20 @@
-name: CI Pipeline Docker
+name: dockerImage 
 
-on:
+on: 
   workflow_run:
-    workflows:
-      - CI Pipeline Codecov
-      - CI Pipeline Snyk
-    types:
-      - completed
+    workflows: ["Test_and_Vulnerability_Scanning"]
+    types: 
+        - completed
+        #Maybe on success instead of copmpleted?
 
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+
       - name: Check out code
         uses: actions/checkout@v4
-
+        
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -33,17 +33,3 @@ jobs:
         with:
           push: true
           tags: ghcr.io/${{ github.repository }}/note-api:latest  # Image in GitHub Container Registry
-
-#      -
-#        name: Login to Docker Hub
-#        uses: docker/login-action@v3
-#        with:
-#          username: ${{ secrets.DOCKERHUB_USERNAME }} # DOCKERHUB_USERNAME muss als Secret hinzugefügt werden
-#          password: ${{ secrets.DOCKERHUB_TOKEN }} # DOCKERHUB_TOKEN muss als Secret hinzugefügt werden
-          # dafür muss man sich bei Docker Hub anmelden und mit GitHub verbinden, dann dort ein Access Token erstellen
-#      -
-#        name: Build and push
-#        uses: docker/build-push-action@v6
-#        with:
-#          push: true
-#          tags: ${{ secrets.DOCKERHUB_USERNAME }}/note-api:latest # Hier muss man ggf seinen eigenen Benutzernamen einfügen
